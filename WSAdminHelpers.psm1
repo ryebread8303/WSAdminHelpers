@@ -16,13 +16,14 @@ foreach ($import in @($Public + $Private)) {
 foreach ($file in $Public) {
     Export-ModuleMember -Function $file.BaseName
 }
-
+<#
 new-eventlog -logname 'Application' -source 'ESDHelpers' -ErrorAction "SilentlyContinue"
 $ESDHelpersWinEvents = @{
     WinLogName = 'Application'
     WinLogSource = 'ESDHelpers'
     WinLogCategory = 0
 }
+#>
 Export-ModuleMember -Alias *
 Export-ModuleMember -Variable ESDHelpersWinEvents
 #endregion import scripts
