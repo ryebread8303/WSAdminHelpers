@@ -47,3 +47,11 @@ This command accepts a hostname, and tests if the port used by WinRM is open. If
 ## Repair-SCCMClient
 
 This command attempts to remotely start a repair action for the SCCM client.
+
+## Get-BDEObjects
+
+This command fetches BitLocker recovery passwords from AD. You can give it the computername, or the recovery key ID.
+
+## Get-ComputerLogs
+
+This command can remotely fetch SCCM and certificate enrollment logs, as well as attempting to get the Group Policy RSoP data.

@@ -57,7 +57,7 @@ get-workstationstatus leonw6smaanb010
 Querying leonw6smaanb010
 Manufacturer: Dell Inc.
 Model: Latitude 5580
-Serial Number: GZVHWD2
+Serial Number: XXXXXXX
 MAC A4:4C:C8:36:8A:AB
 Universal Build Revision (Patch level): 1645
 Windows Install Date: 8/26/2021 12:40:31 PM
@@ -92,7 +92,7 @@ HVCIRunning         : True
 VBSConfigured       : True
 VBSRunning          : True
 CertInstalled       : True
-SerialNumber        : C2WHWD2
+SerialNumber        : XXXXXXX
 TPMOwned            : True
 Manufacturer        : Dell Inc.
 WindowsBuild        : 19042

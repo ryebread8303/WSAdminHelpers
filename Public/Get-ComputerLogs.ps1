@@ -20,7 +20,7 @@ COMPANY: Ft Leonard Wood Network Enterprise Center
 LAST UPDATE: 19 NOV 2021
 INTENDED AUDIENCE: Workstation administrators
 #>
-function Get-LeonComputerLogs {
+function Get-ComputerLogs {
     param(
         [Parameter(mandatory=$true,ValueFromPipeLine=$true)]
         [string[]]
