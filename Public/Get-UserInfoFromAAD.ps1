@@ -7,22 +7,22 @@ This script uses the AzureAD PowerShell module to query AzureAD for user informa
 The first time you run this command in a session, you will be prompted for your army.mil credentials. Subsequent runs within that same session won't need credentials; you're connection stays open until you close your PowerShell session.
 .PARAMETER UserPrincipal
 Provide the user's army.mil email address, or as much of the beginning of it as you can.
-.PARAMETER DODID
-Provide the DODID number of the user.
+.PARAMETER EmployeeID
+Provide the EmployeeID number of the user.
 .EXAMPLE
-gufaad -userprincipal oryan.r.hedrick.civ
+gufaad -userprincipal foo.b.baz
 
 
-UserName        : foo.b.baz.civ@army.mil
+UserName        : foo.b.baz.civ@example.com
 DisplayName     : Baz, Foo B
-DODID           : XXXXXXXXXXXXXXXX
+EmployeeID      : XXXXXXXXXXXXXXXX
 UIC             : XXXXXX
 AttachedUIC     : XXXXXX
 TelephoneNumber : (XXX) XXX-XXXX
-Email           : XXX.X.XXX.XXX@army.mil
-City            : Fort Leonard Wood
-CompanyName     : ARMY-NETCOM
-Unit            : USARMY 106 Sig Bde
+Email           : XXX.X.XXX.XXX@example.com
+City            : FoggyCity
+CompanyName     : Widgets R Us
+Unit            : 
 .NOTES
 AUTHOR: O'Ryan R Hedrick
 COMPANY: Ft Leonard Wood Network Enterprise Center
@@ -36,26 +36,29 @@ function Get-UserInfoFromAAD {
         [Parameter(ParameterSetName="principal")]
         [string]
         $UserPrincipal,
-        [Parameter(ParameterSetName="DODID")]
+        [Parameter(ParameterSetName="EmployeeID")]
         [string]
-        $DODID
+        $EmployeeID,
+        [Parameter()]
+        [string]
+        $AzureEnvironment
     )
     #Check if we're already connected to AzureAD, and connect if we haven't already
     try {
     Get-AzureADTenantDetail | Out-Null
     } catch {
-        connect-azuread -AzureEnvironmentName AzureUSGovernment | Out-Null
+        connect-azuread -AzureEnvironmentName $AzureEnvironment | Out-Null
     }
     #region search by user principal
     if ($UserPrincipal){
         $Users = Get-AzureADUser -filter "startswith(UserPrincipalName,'$UserPrincipal')"
     }
     #endregion search by user principal
-    #region search by DODID
-    if ($DODID){
-        $Users = Get-AzureADUser -filter "startswith(employeeid,'$DODID')"
+    #region search by EmployeeID
+    if ($EmployeeID){
+        $Users = Get-AzureADUser -filter "startswith(employeeid,'$EmployeeID')"
     }
-    #endregion search by DODID
+    #endregion search by EmployeeID
     #region emit results
     If ($null -eq $users){
         Write-Error "No user found"
@@ -64,7 +67,7 @@ function Get-UserInfoFromAAD {
             [pscustomobject]@{
                 UserName = $User.UserPrincipalName
                 DisplayName = $User.DisplayName
-                DODID = $User.extensionproperty.employeeId
+                EmployeeID = $User.extensionproperty.employeeId
                 UIC = $User.extensionproperty.extension_d6e3e32847d649e78bcbdbd1fab0bba9_dodUIC
                 AttachedUIC = $User.extensionproperty.extension_d6e3e32847d649e78bcbdbd1fab0bba9_dodAttachedUIC
                 TelephoneNumber = $User.TelephoneNumber
